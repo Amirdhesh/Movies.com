@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Navbar() {
   return (
-    <div className='flex justify-evenly py-3 gap-96 border-b-[1px] border-gray-500'>
+    <div className='flex justify-between py-3 px-20 border-b-[1px] border-gray-500'>
         <div>
             <h1 className='text-3xl text-orange-500' >Movies.com</h1>
         </div>

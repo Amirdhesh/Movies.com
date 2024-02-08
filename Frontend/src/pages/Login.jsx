@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Login() {
+    const navigation = useNavigate()
     const [LoginDetails, setLoginDetails] = useState({})
 
     function updateUserDetails(e){
@@ -12,9 +13,24 @@ export default function Login() {
     }
 
 
-    function handleLogin(event){
+    async function handleLogin(event){
         event.preventDefault()
         // fetch post for login
+        const resp = await fetch('/api/users/login', {
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(LoginDetails)
+        })
+        const data = await resp.json()
+        if (data.status){
+            navigation('/dashboard',{
+                replace:true
+            })
+        } else{
+            alert("Invalid Username/Password")
+        }
     }
 
   return (
@@ -25,10 +41,10 @@ export default function Login() {
                     <h1 className='text-3xl'>Login</h1>
                 </div>
                 <div className='flex justify-center py-2'>
-                    <input className='border-[1px] border-orange-500 outline-none p-1 rounded-xl' onChange={updateUserDetails} type="text" name="user_name" placeholder='Username' id="" />
+                    <input className='border-[1px] border-orange-500 outline-none p-1 rounded-xl' onChange={updateUserDetails} type="text" name="name" placeholder='Username' id="" />
                 </div>
                 <div className='flex justify-center py-2'>
-                    <input className='border-[1px] border-orange-500 outline-none p-1 rounded-xl' onChange={updateUserDetails} type="password" name="user_password" placeholder='password' id="" />
+                    <input className='border-[1px] border-orange-500 outline-none p-1 rounded-xl' onChange={updateUserDetails} type="password" name="password" placeholder='password' id="" />
                 </div>
                 <div className='flex justify-center py-2'>
                     <input className='bg-orange-200 hover:bg-orange-900 hover:text-white p-2 rounded-xl' type="submit" value="Login Here" />
