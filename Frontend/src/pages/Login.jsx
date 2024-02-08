@@ -28,6 +28,8 @@ export default function Login() {
             navigation('/dashboard',{
                 replace:true
             })
+        } else{
+            alert("Invalid Username/Password")
         }
     }
 
