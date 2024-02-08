@@ -173,5 +173,4 @@ def get_movies(*, session: Session = Depends(get_session)):
 #        session.add(movie)
 #        session.commit()
     select
-    session.
     return {'status':True}
