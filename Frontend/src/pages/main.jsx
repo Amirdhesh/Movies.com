@@ -5,6 +5,17 @@ export default function Main() {
   const [genre, setgenre] = useState('All');
   const [movies, setmovies] = useState([]);
   const genres = ['All', 'Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller'];
+  const [Search, setSearch] = useState('')
+  const [SearchMovies, setSearchMovies] = useState([])
+
+  console.log(Search)
+
+  useEffect(() => {
+    const filteredMovies = movies.filter(movie =>
+      movie.title.toLowerCase().includes(Search.toLowerCase())
+    );
+    setSearchMovies(filteredMovies);
+  }, [Search, movies]);
 
   useEffect(() => {
     async function FetchMovies() {
@@ -26,10 +37,11 @@ export default function Main() {
     FetchMovies();
   }, [genre]);
 
+
   return (
     <div>
       <div>
-        <Navbar />
+        <Navbar setSearch={setSearch} />
       </div>
       <div className="overflow-x-auto whitespace-nowrap py-4 px-20">
         {genres.map((genreItem, index) => (
@@ -44,7 +56,7 @@ export default function Main() {
       </div>
       <div className='grid grid-cols-6 gap-4 py-3 px-20'>
         {
-          movies.map((movie, index) => (
+          SearchMovies.map((movie, index) => (
             <div key={index} className='h-96 flex flex-col justify-between bg-gray-200 border-[1px] border-gray-400 rounded-sm hover:shadow-md'>
               <div className='h-3/5 bg-slate-100'></div>
               <div className='text-center'>
