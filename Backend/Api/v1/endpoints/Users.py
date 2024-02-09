@@ -5,6 +5,8 @@ from Db.config import Session, get_session, select
 router = APIRouter()
 
 
+from sqlalchemy.exc import IntegrityError
+
 @router.post("/register")
 def create_user(
     *, session: Session = Depends(get_session), user_details: UserCreate
@@ -16,9 +18,11 @@ def create_user(
         user.password = user_details.password
         session.add(user)
         session.commit()
-        return user_details
-    except :
-        return {'status':False, 'message':f'Username {user.name} already exists'}
+        return {'status': True}
+    except IntegrityError as e:
+        session.rollback() 
+        return {'status': False, 'message': f'Username {user_details.name} already exists'}
+
 
 @router.post("/login")
 def login_user(*, session: Session = Depends(get_session),user_details: UserLogin):

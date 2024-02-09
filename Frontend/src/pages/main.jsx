@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
   const [genre, setgenre] = useState('All');
@@ -7,6 +8,7 @@ export default function Main() {
   const genres = ['All', 'Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller'];
   const [Search, setSearch] = useState('')
   const [SearchMovies, setSearchMovies] = useState([])
+  const navigate = useNavigate()
 
   console.log(Search)
 
@@ -36,7 +38,11 @@ export default function Main() {
     }
     FetchMovies();
   }, [genre]);
-
+  
+  function watch(title){
+    console.log(title)
+    navigate('/movie',{state:{moviename:title}})
+  }
 
   return (
     <div>
@@ -58,7 +64,9 @@ export default function Main() {
         {
           SearchMovies.map((movie, index) => (
             <div key={index} className='h-96 flex flex-col justify-between bg-gray-200 border-[1px] border-gray-400 rounded-sm hover:shadow-md'>
-              <div className='h-3/5 bg-slate-100'></div>
+              <div className='h-3/5 bg-slate-100'>
+
+              </div>
               <div className='text-center'>
                 <h1>{movie.title}</h1>
               </div>
@@ -74,7 +82,7 @@ export default function Main() {
                 </div>
               </div>
               <div className='flex justify-center py-2'>
-                <button className='py-1 px-5 rounded-md bg-orange-200 hover:bg-orange-300'>Watch Now</button>
+                <button className='py-1 px-5 rounded-md bg-orange-200 hover:bg-orange-300' onClick={()=>watch(movie.title)}>Watch Now</button>
               </div>
             </div>
           ))
